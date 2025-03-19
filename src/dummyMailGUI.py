@@ -6,14 +6,11 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QTreeWidget, QTreeWidget
                             QSplitter, QTextEdit, QVBoxLayout, QHBoxLayout, QWidget, 
                             QLabel, QPushButton, QLineEdit, QFormLayout, QGroupBox)
 from PyQt5.QtCore import Qt
-
 from handler.Handler import Handler
 from handler import Handler
+from handler.sharedSignals import email_signals
+from handler.sharedSignals import received_emails
 
-email_signals = Handler.EmailSignals()
-
-# 受信したメールを保存するグローバルリスト
-received_emails = []
 
 class EmailServerGUI(QMainWindow):
     def __init__(self):

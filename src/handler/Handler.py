@@ -2,25 +2,11 @@ import email
 import time
 from email.header import decode_header
 from email.utils import parseaddr
-from PyQt5.QtCore import pyqtSignal,QObject
+from .sharedSignals import email_signals
+from .sharedSignals import EmailMessage
+from .sharedSignals import received_emails
 
-class EmailMessage:
-    def __init__(self, sender, recipients, subject, content, timestamp, raw_message):
-        self.sender = sender
-        self.recipients = recipients
-        self.subject = subject
-        self.content = content
-        self.timestamp = timestamp
-        self.raw_message = raw_message
-
-# GUIとコアロジックの通信ブリッジ
-class EmailSignals(QObject):
-    new_email = pyqtSignal(EmailMessage)
-    
-email_signals = EmailSignals()
 # 受信したメールを保存するグローバルリスト
-received_emails = []
-
 class Handler:
     async def handle_RCPT(self, server, session, envelope, address, rcpt_options):
         envelope.rcpt_tos.append(address)
@@ -94,5 +80,6 @@ class Handler:
         received_emails.append(email_message)
         email_signals.new_email.emit(email_message)
         
+        print(content)
         print('End of message')
         return '250 Message accepted for delivery'
